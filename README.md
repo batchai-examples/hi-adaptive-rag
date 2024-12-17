@@ -21,12 +21,12 @@ A Question/Answer demo based on [LangChain Adaptive RAG](https://langchain-ai.gi
 
    1. Create a Python Environment
      
-     Ensure you have Python 3.11 or higher installed. Set up a virtual environment and activate it:
+      Ensure you have Python 3.11 or higher installed. Set up a virtual environment and activate it:
 
-     ```bash
-     $ python -m venv venv
-     $ source venv/bin/activate
-     ```
+      ```bash
+      $ python -m venv venv
+      $ source venv/bin/activate
+      ```
 
    2. Navigate to the backend directory and install the required packages:
 
