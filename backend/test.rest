@@ -1,6 +1,6 @@
 ###
-POST http://localhost:3001/rest/question
+POST http://localhost:3001/rest/v1/question
 
 {
-    "question": "what's adapttive rag"
+    "question": "What player at the Bears expected to draft first in the 2024 NFL draft?"
 }

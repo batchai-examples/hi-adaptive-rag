@@ -1,17 +1,66 @@
+from datetime import datetime, timezone
+import http
+import os
+from logging import Logger
 from pprint import pprint
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.responses import JSONResponse
+from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel
 
 from dotenv import load_dotenv
+from misc import format_datetime
+from errs import BaseError
+from log import get_logger
 from workflow import workflow
 
-load_dotenv()
+load_dotenv(dotenv_path=os.path.join(os.getcwd(), ".env"))
 
 # Compile
 compiled_workflow = workflow.compile()
 
-fastapi_app = FastAPI()
 
+class LoggingMiddleware(BaseHTTPMiddleware):
+    logger: Logger = get_logger("api")
+
+    async def dispatch(self, request, call_next):
+        self.logger.info("Request body: %s", await request.body())
+        resp = await call_next(request)
+        return resp
+    
+
+fastapi_app = FastAPI(validate_responses=False)
+fastapi_app.add_middleware(LoggingMiddleware)
+
+@fastapi_app.exception_handler(BaseError)
+async def custom_exception_handler(request: Request, exc: BaseError):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "path": request.url.path,
+            "timestamp": format_datetime(datetime.now(timezone.utc)),
+            "status": exc.status_code,
+            "error": http.HTTPStatus(exc.status_code).phrase,
+            "code": exc.code,
+            "message": exc.detail,
+            "params": [],
+        },
+    )
+
+
+@fastapi_app.exception_handler(500)
+async def internal_exception_handler(request: Request, exc):
+    if isinstance(exc, BaseError):
+        return await custom_exception_handler(request, exc)
+    return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
+
+ 
+
+
+####################################################################
 class QuestionRequest(BaseModel):
     question: str
 
@@ -19,8 +68,8 @@ class AnswerResponse(BaseModel):
     question: str
     answer: str
 
-@fastapi_app.post("/rest/question", response_model=AnswerResponse)
-async def get_answer(request: QuestionRequest):
+@fastapi_app.post("/rest/v1/question", response_model=AnswerResponse)
+async def submit_question(request: QuestionRequest):
     question = request.question.strip()
     inputs = {
         "question": question
