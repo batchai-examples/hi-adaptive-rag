@@ -11,10 +11,6 @@ import Backdrop from '@mui/material/Backdrop';
 export interface UIContextType {
   setLoading: (value: boolean) => void;
   setError: (value) => void;
-
-  confirm: (message: ConfirmDialogMessage, onConfirmed: () => void) => void;
-  signIn: (message: SignInDialogMessage) => void;
-  requestStar: () => void;
 }
 
 const UIContext = createContext<UIContextType | undefined>(undefined);
@@ -24,25 +20,10 @@ export const UIContextProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [confirmDialogProps, setConfirmDialogProps] = useState<ConfirmDialogProps>(null);
-  const [signInDialogProps, setSignInDialogProps] = useState<SignInDialogProps>(null);
-  const [RequestStarDialogProps, setRequestStarDialogProps] = useState<RequestStarDialogProps>(null);
   const handleCloseError = () => setError(null);
 
   const value = useMemo(() => {
-    const confirm = (message: ConfirmDialogMessage, onConfirmed: () => void) => {
-      setConfirmDialogProps({ ...message, open: true, onConfirmed, closeFunc: () => setConfirmDialogProps(null) });
-    };
-
-    const signIn = (message: SignInDialogMessage) => {
-      setSignInDialogProps({ ...message, open: true, closeFunc: () => setSignInDialogProps(null) });
-    };
-
-    const requestStar = () => {
-      setRequestStarDialogProps({ open: true, closeFunc: () => setRequestStarDialogProps(null) });
-    };
-
-    return { setLoading, setError, confirm, signIn, requestStar };
+    return { setLoading, setError };
   }, []);
 
 

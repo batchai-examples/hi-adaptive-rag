@@ -1,9 +1,8 @@
-import { SessionState } from '@/lib';
 import { UIContextType } from '@/lib/ui.context';
 import axios from 'axios'
 
 
-const withAxios = (s: SessionState, ui: UIContextType) => {
+const withAxios = (ui: UIContextType) => {
   const service = axios.create({
     //baseURL: `${process.env.NEXT_PUBLIC_API_SERVER}/rest/v1`,
     baseURL: `/rest/v1`,
@@ -19,10 +18,10 @@ const withAxios = (s: SessionState, ui: UIContextType) => {
       // Do something before request is sent
       config.headers['Content-Type'] = 'application/json'
 
-      const accessToken = s?.detail?.accessToken;
-      if (accessToken) {
-        config.headers['Authorization'] = `Bearer ${accessToken}`
-      }
+      // const accessToken = s?.detail?.accessToken;
+      // if (accessToken) {
+      //   config.headers['Authorization'] = `Bearer ${accessToken}`
+      // }
 
       return config
     },
@@ -44,10 +43,10 @@ const withAxios = (s: SessionState, ui: UIContextType) => {
           //} else {
           //  console.log('请登录')//ElMessage.error('请登录')
           //}
-          // 重定向到登录页面
+          
           //const router = useRouter()
           //router.push({ name: 'SignIn' })
-          s.redirect();
+          //s.redirect();
           return Promise.resolve(null);
         }
 
