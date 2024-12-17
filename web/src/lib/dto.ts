@@ -8,9 +8,10 @@ export class AnswerResponse {
     question: string;
     answer: string;
 
-    static with(obj: any) {
+    static with(obj: any): AnswerResponse {
         if (!obj) return;
         Object.setPrototypeOf(obj, AnswerResponse.prototype);
+        return obj;
     }
 
 }
