@@ -8,7 +8,7 @@ const nextConfig = {
         return [
             {
                 source: '/rest/:path*',
-                destination: 'http://192.168.6.93:4080/rest/:path*',
+                destination: 'http://localhost:4080/rest/:path*',
             },
         ];
     },
