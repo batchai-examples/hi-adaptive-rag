@@ -1,5 +1,5 @@
 ###
-POST http://localhost:4080/rest/question
+POST http://localhost:3001/rest/question
 
 {
     "question": "what's adapttive rag"
