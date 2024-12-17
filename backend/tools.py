@@ -80,12 +80,12 @@ def build_question_router():
     )
 
     question_router = route_prompt | structured_llm_router
-    print(
-        question_router.invoke(
-            {"question": "Who will the Bears draft first in the NFL draft?"}
-        )
-    )
-    print(question_router.invoke({"question": "What are the types of agent memory?"}))
+    # print(
+    #     question_router.invoke(
+    #         {"question": "Who will the Bears draft first in the NFL draft?"}
+    #     )
+    # )
+    # print(question_router.invoke({"question": "What are the types of agent memory?"}))
     return question_router
 
 question_router = build_question_router()
@@ -124,10 +124,10 @@ def build_retrieval_grader():
 
 retrieval_grader = build_retrieval_grader()
 
-question = "agent memory"
-docs = retriever.invoke(question)
-doc_txt = docs[1].page_content
-print(retrieval_grader.invoke({"question": question, "document": doc_txt}))
+# question = "agent memory"
+# docs = retriever.invoke(question)
+# doc_txt = docs[1].page_content
+# print(retrieval_grader.invoke({"question": question, "document": doc_txt}))
     
 
 ### Generate ##########################################################################################################
@@ -149,9 +149,9 @@ def build_rag_chain():
     return rag_chain
 
 rag_chain = build_rag_chain()
-# Run
-generation = rag_chain.invoke({"context": docs, "question": question})
-print(generation)
+# # Run
+# generation = rag_chain.invoke({"context": docs, "question": question})
+# print(generation)
 
 ### Hallucination Grader ################################################################################################
 
@@ -183,7 +183,7 @@ def build_hallucination_grader():
     return hallucination_grader
 
 hallucination_grader = build_hallucination_grader()
-hallucination = hallucination_grader.invoke({"documents": docs, "generation": generation})
+#hallucination = hallucination_grader.invoke({"documents": docs, "generation": generation})
 #print(hallucination)
 ## GradeHallucinations(binary_score='yes')
 
@@ -217,7 +217,7 @@ def build_answer_grader():
     return answer_grader
 
 answer_grader = build_answer_grader()
-answer_grader.invoke({"question": question, "generation": generation})
+#answer_grader.invoke({"question": question, "generation": generation})
 
 ## GradeAnswer(binary_score='yes')
 
@@ -243,7 +243,7 @@ def build_question_rewriter():
     return question_rewriter
 
 question_rewriter = build_question_rewriter()
-question_rewriter.invoke({"question": question})
+#question_rewriter.invoke({"question": question})
 
 ## "What is the role of memory in an agent's functioning?"
 
