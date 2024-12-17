@@ -1,0 +1,46 @@
+{
+  "name": "hi-adaptive-rag-web",
+  "version": "0.1.2",
+  "description": "",
+  "author": "qiangyt@wxcount.com",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0 -p 4081",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    "@fontsource/roboto": "^5.0.13",
+    "@hookform/resolvers": "^3.9.0",
+    "@mui/icons-material": "^6.1.6",
+    "@mui/lab": "^6.0.0-beta.14",
+    "@mui/material": "^6.1.6",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-switch": "^1.1.0",
+    "axios": "^1.7.7",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "http-proxy-middleware": "^3.0.0",
+    "lodash": "^4.17.21",
+    "lucide-react": "^0.407.0",
+    "next": "14.2.17",
+    "next-themes": "^0.3.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.52.1"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.13",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.5",
+    "postcss": "^8",
+    "typescript": "^5"
+  }
+}
