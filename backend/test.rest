@@ -1,0 +1,6 @@
+###
+POST http://localhost:4080/rest/question
+
+{
+    "question": "what's adapttive rag"
+}
