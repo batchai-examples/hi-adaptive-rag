@@ -1,0 +1,27 @@
+{
+    "path": "backend/log.py",
+    "model_usage_metrics": {
+        "Duration": 17877775288,
+        "OpenAiUsage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "total_tokens": 0,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "audio_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens_details": {
+                "audio_tokens": 0,
+                "cached_tokens": 0
+            }
+        }
+    },
+    "test_file_path": "backend/test_log.py",
+    "existing_test_code": "",
+    "original_code": "import logging\nfrom logging import Logger\n\nfrom pydantic import BaseModel\n\napp_logger = logging.getLogger(\"app\")\n\n\nclass LogConfig(BaseModel):\n    level: str\n    format: str\n\n\ndef get_logger(name: str, level: str | int = \"auto\") -\u003e logging.Logger:\n    r = logging.getLogger(f\"{app_logger.name}.{name}\")\n    if level == \"auto\":\n        level = app_logger.getEffectiveLevel()\n    r.setLevel(level)\n    return r\n\n\ndef init_loggers(cfg: LogConfig) -\u003e Logger:\n    app_logger.setLevel(cfg.level)\n\n    formatter = logging.Formatter(cfg.format)\n\n    console_handler = logging.StreamHandler()\n    console_handler.setFormatter(formatter)\n    app_logger.addHandler(console_handler)\n\n    return app_logger\n",
+    "test_code": "import logging\nimport pytest\nfrom backend.log import get_logger, init_loggers, LogConfig, app_logger\n\n# Test cases for the logging functionality\n\nclass TestLogging:\n\n    @pytest.fixture(autouse=True)\n    def setup_and_teardown(self):\n        \"\"\"Setup and teardown for each test case.\"\"\"\n        # Clear existing handlers to avoid duplicate logs\n        app_logger.handlers.clear()\n        yield\n        app_logger.handlers.clear()\n\n    def test_get_logger_with_auto_level(self):\n        \"\"\"Test get_logger function with 'auto' level.\"\"\"\n        logger = get_logger(\"test_auto\")\n        assert logger.level == logging.NOTSET  # Default level should be NOTSET\n\n    def test_get_logger_with_specific_level(self):\n        \"\"\"Test get_logger function with a specific logging level.\"\"\"\n        logger = get_logger(\"test_specific\", logging.DEBUG)\n        assert logger.level == logging.DEBUG  # Level should be set to DEBUG\n\n    def test_init_loggers_with_valid_config(self):\n        \"\"\"Test init_loggers function with a valid LogConfig.\"\"\"\n        config = LogConfig(level=\"DEBUG\", format=\"%(asctime)s - %(name)s - %(levelname)s - %(message)s\")\n        logger = init_loggers(config)\n        assert logger.level == logging.DEBUG  # Logger level should be set to DEBUG\n        assert len(logger.handlers) == 1  # One handler should be added\n\n    def test_init_loggers_with_invalid_level(self):\n        \"\"\"Test init_loggers function with an invalid logging level.\"\"\"\n        config = LogConfig(level=\"INVALID_LEVEL\", format=\"%(asctime)s - %(name)s - %(levelname)s - %(message)s\")\n        with pytest.raises(ValueError):\n            init_loggers(config)  # Should raise ValueError due to invalid level\n\n    def test_init_loggers_with_empty_format(self):\n        \"\"\"Test init_loggers function with an empty format string.\"\"\"\n        config = LogConfig(level=\"INFO\", format=\"\")\n        logger = init_loggers(config)\n        assert logger.level == logging.INFO  # Logger level should be set to INFO\n        assert len(logger.handlers) == 1  # One handler should be added\n        assert logger.handlers[0].formatter._fmt == \"\"  # Formatter should be empty\n\n    def test_get_logger_with_invalid_name(self):\n        \"\"\"Test get_logger function with an invalid logger name.\"\"\"\n        with pytest.raises(TypeError):\n            get_logger(None)  # Should raise TypeError due to None name\n",
+    "amount_of_generated_test_cases": 6,
+    "single_test_run_command": "pytest backend/test_log.py"
+}

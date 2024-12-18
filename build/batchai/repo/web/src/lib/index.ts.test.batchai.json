@@ -1,0 +1,27 @@
+{
+    "path": "web/src/lib/index.ts",
+    "model_usage_metrics": {
+        "Duration": 9225031696,
+        "OpenAiUsage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "total_tokens": 0,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "audio_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens_details": {
+                "audio_tokens": 0,
+                "cached_tokens": 0
+            }
+        }
+    },
+    "test_file_path": "web/src/lib/index.test.ts",
+    "existing_test_code": "",
+    "original_code": "export * from './dto';\nexport * from './utils';\nexport * from './ui.context';\n",
+    "test_code": "// Importing necessary modules for testing\nimport * as dto from './dto';\nimport * as utils from './utils';\nimport * as uiContext from './ui.context';\n\n/**\n * Test suite for the index module.\n * This suite tests the exports from the index file to ensure they are correctly re-exported.\n */\ndescribe('Index Module', () =\u003e {\n  \n  // Happy path test case: Check if dto is exported correctly\n  it('should export dto module', () =\u003e {\n    // Check if dto is defined\n    expect(dto).toBeDefined();\n    // Check if dto has expected properties/functions (example)\n    expect(typeof dto.someFunction).toBe('function');\n  });\n\n  // Happy path test case: Check if utils is exported correctly\n  it('should export utils module', () =\u003e {\n    // Check if utils is defined\n    expect(utils).toBeDefined();\n    // Check if utils has expected properties/functions (example)\n    expect(typeof utils.anotherFunction).toBe('function');\n  });\n\n  // Happy path test case: Check if uiContext is exported correctly\n  it('should export ui.context module', () =\u003e {\n    // Check if uiContext is defined\n    expect(uiContext).toBeDefined();\n    // Check if uiContext has expected properties/functions (example)\n    expect(typeof uiContext.someContext).toBe('object');\n  });\n\n});\n",
+    "amount_of_generated_test_cases": 3,
+    "single_test_run_command": "npm test web/src/lib/index.test.ts"
+}

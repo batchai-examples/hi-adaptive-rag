@@ -1,0 +1,27 @@
+{
+    "path": "web/src/api/question.ts",
+    "model_usage_metrics": {
+        "Duration": 21552055536,
+        "OpenAiUsage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "total_tokens": 0,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "audio_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens_details": {
+                "audio_tokens": 0,
+                "cached_tokens": 0
+            }
+        }
+    },
+    "test_file_path": "web/src/api/question.test.ts",
+    "existing_test_code": "",
+    "original_code": "import { UIContextType } from '@/lib/ui.context';\nimport withAxios from './request'\nimport { QuestionRequest, AnswerResponse } from '@/lib';\n\n\nexport async function submitQuestion(ui: UIContextType, question: QuestionRequest): Promise\u003cAnswerResponse\u003e {\n    const resp = await withAxios(ui).post('/question', question);\n    return AnswerResponse.with(resp);\n  }\n",
+    "test_code": "import { submitQuestion } from './question';\nimport { UIContextType } from '@/lib/ui.context';\nimport { QuestionRequest, AnswerResponse } from '@/lib';\nimport withAxios from './request';\n\n// Mocking the withAxios function to simulate API responses\njest.mock('./request', () =\u003e ({\n  __esModule: true,\n  default: jest.fn()\n}));\n\ndescribe('submitQuestion', () =\u003e {\n  const mockUI: UIContextType = { /* mock UIContextType properties */ };\n\n  // Happy path test case\n  it('should submit a question and return a valid answer response', async () =\u003e {\n    const mockQuestion: QuestionRequest = { /* mock question request properties */ };\n    const mockResponse = { /* mock response properties */ };\n    \n    (withAxios as jest.Mock).mockReturnValue({\n      post: jest.fn().mockResolvedValue(mockResponse)\n    });\n\n    const result = await submitQuestion(mockUI, mockQuestion);\n    \n    expect(result).toEqual(AnswerResponse.with(mockResponse));\n    expect(withAxios).toHaveBeenCalledWith(mockUI);\n  });\n\n  // Positive case: Valid question with expected response\n  it('should return an AnswerResponse when a valid question is submitted', async () =\u003e {\n    const validQuestion: QuestionRequest = { /* valid question properties */ };\n    const validResponse = { /* valid response properties */ };\n\n    (withAxios as jest.Mock).mockReturnValue({\n      post: jest.fn().mockResolvedValue(validResponse)\n    });\n\n    const result = await submitQuestion(mockUI, validQuestion);\n\n    expect(result).toEqual(AnswerResponse.with(validResponse));\n  });\n\n  // Negative case: Submitting an invalid question\n  it('should throw an error when submitting an invalid question', async () =\u003e {\n    const invalidQuestion: QuestionRequest = { /* invalid question properties */ };\n\n    (withAxios as jest.Mock).mockReturnValue({\n      post: jest.fn().mockRejectedValue(new Error('Invalid question'))\n    });\n\n    await expect(submitQuestion(mockUI, invalidQuestion)).rejects.toThrow('Invalid question');\n  });\n\n  // Corner case: Submitting an empty question\n  it('should throw an error when submitting an empty question', async () =\u003e {\n    const emptyQuestion: QuestionRequest = { /* properties indicating an empty question */ };\n\n    (withAxios as jest.Mock).mockReturnValue({\n      post: jest.fn().mockRejectedValue(new Error('Question cannot be empty'))\n    });\n\n    await expect(submitQuestion(mockUI, emptyQuestion)).rejects.toThrow('Question cannot be empty');\n  });\n\n  // Corner case: Network error during submission\n  it('should throw an error when there is a network issue', async () =\u003e {\n    const question: QuestionRequest = { /* valid question properties */ };\n\n    (withAxios as jest.Mock).mockReturnValue({\n      post: jest.fn().mockRejectedValue(new Error('Network Error'))\n    });\n\n    await expect(submitQuestion(mockUI, question)).rejects.toThrow('Network Error');\n  });\n\n  // Positive case: Submitting a question with special characters\n  it('should handle submission of a question with special characters', async () =\u003e {\n    const specialCharQuestion: QuestionRequest = { /* question with special characters */ };\n    const responseWithSpecialChars = { /* response properties */ };\n\n    (withAxios as jest.Mock).mockReturnValue({\n      post: jest.fn().mockResolvedValue(responseWithSpecialChars)\n    });\n\n    const result = await submitQuestion(mockUI, specialCharQuestion);\n\n    expect(result).toEqual(AnswerResponse.with(responseWithSpecialChars));\n  });\n});\n",
+    "amount_of_generated_test_cases": 6,
+    "single_test_run_command": "npm test web/src/api/question.test.ts"
+}

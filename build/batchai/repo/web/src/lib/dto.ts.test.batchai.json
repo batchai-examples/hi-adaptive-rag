@@ -1,0 +1,27 @@
+{
+    "path": "web/src/lib/dto.ts",
+    "model_usage_metrics": {
+        "Duration": 15935989053,
+        "OpenAiUsage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "total_tokens": 0,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "audio_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens_details": {
+                "audio_tokens": 0,
+                "cached_tokens": 0
+            }
+        }
+    },
+    "test_file_path": "web/src/lib/dto.test.ts",
+    "existing_test_code": "",
+    "original_code": "\"use client\";\n\nexport class QuestionRequest {\n    question: string;\n}\n\nexport class AnswerResponse {\n    question: string;\n    answer: string;\n\n    static with(obj: any): AnswerResponse {\n        if (!obj) return;\n        Object.setPrototypeOf(obj, AnswerResponse.prototype);\n        return obj;\n    }\n\n}\n",
+    "test_code": "\"use client\";\n\nimport { AnswerResponse } from './dto';\n\n/**\n * Test suite for AnswerResponse class\n */\ndescribe('AnswerResponse', () =\u003e {\n\n    /**\n     * Test case for static method with() - happy path\n     * This test checks if the method correctly assigns the prototype\n     * and returns the object when a valid object is passed.\n     */\n    it('should return an AnswerResponse object with valid input', () =\u003e {\n        const input = { question: 'What is your name?', answer: 'John Doe' };\n        const response = AnswerResponse.with(input);\n        expect(response).toBeDefined(); // Check if response is defined\n        expect(response.question).toBe('What is your name?'); // Check if question is correct\n        expect(response.answer).toBe('John Doe'); // Check if answer is correct\n    });\n\n    /**\n     * Test case for static method with() - negative case\n     * This test checks if the method returns undefined when no object is passed.\n     */\n    it('should return undefined when no input is provided', () =\u003e {\n        const response = AnswerResponse.with(undefined);\n        expect(response).toBeUndefined(); // Check if response is undefined\n    });\n\n    /**\n     * Test case for static method with() - corner case\n     * This test checks if the method handles an empty object correctly.\n     */\n    it('should return an AnswerResponse object with an empty object', () =\u003e {\n        const input = {};\n        const response = AnswerResponse.with(input);\n        expect(response).toBeDefined(); // Check if response is defined\n        expect(response.question).toBeUndefined(); // Check if question is undefined\n        expect(response.answer).toBeUndefined(); // Check if answer is undefined\n    });\n\n    /**\n     * Test case for static method with() - negative case\n     * This test checks if the method handles null input correctly.\n     */\n    it('should return undefined when null is provided', () =\u003e {\n        const response = AnswerResponse.with(null);\n        expect(response).toBeUndefined(); // Check if response is undefined\n    });\n\n    /**\n     * Test case for static method with() - happy path\n     * This test checks if the method correctly assigns the prototype\n     * and returns the object when a partially filled object is passed.\n     */\n    it('should return an AnswerResponse object with partial input', () =\u003e {\n        const input = { question: 'What is your favorite color?' };\n        const response = AnswerResponse.with(input);\n        expect(response).toBeDefined(); // Check if response is defined\n        expect(response.question).toBe('What is your favorite color?'); // Check if question is correct\n        expect(response.answer).toBeUndefined(); // Check if answer is undefined\n    });\n\n    /**\n     * Test case for static method with() - corner case\n     * This test checks if the method handles an object with unexpected properties.\n     */\n    it('should return an AnswerResponse object with unexpected properties', () =\u003e {\n        const input = { question: 'What is your age?', extra: 'not needed' };\n        const response = AnswerResponse.with(input);\n        expect(response).toBeDefined(); // Check if response is defined\n        expect(response.question).toBe('What is your age?'); // Check if question is correct\n        expect(response.answer).toBeUndefined(); // Check if answer is undefined\n    });\n\n});\n",
+    "amount_of_generated_test_cases": 6,
+    "single_test_run_command": "npm test web/src/lib/dto.test.ts"
+}

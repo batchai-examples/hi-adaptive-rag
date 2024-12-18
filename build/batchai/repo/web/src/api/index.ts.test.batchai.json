@@ -1,0 +1,27 @@
+{
+    "path": "web/src/api/index.ts",
+    "model_usage_metrics": {
+        "Duration": 5254164404,
+        "OpenAiUsage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "total_tokens": 0,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "audio_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens_details": {
+                "audio_tokens": 0,
+                "cached_tokens": 0
+            }
+        }
+    },
+    "test_file_path": "web/src/api/index.test.ts",
+    "existing_test_code": "",
+    "original_code": "export * from './request';\nexport * from './question';\n",
+    "test_code": "// Importing necessary modules for testing\nimport * as api from './index';\n\n/**\n * Test suite for the API module\n */\ndescribe('API Module', () =\u003e {\n\n  // Test case for checking if request module is exported correctly\n  test('should export request module', () =\u003e {\n    // Check if the request module is defined\n    expect(api.request).toBeDefined();\n  });\n\n  // Test case for checking if question module is exported correctly\n  test('should export question module', () =\u003e {\n    // Check if the question module is defined\n    expect(api.question).toBeDefined();\n  });\n\n  // Test case for checking if non-existent module is not exported\n  test('should not export non-existent module', () =\u003e {\n    // Check if the non-existent module is undefined\n    expect(api.nonExistentModule).toBeUndefined();\n  });\n\n  // Test case for checking if all exports are functions (assuming they are)\n  test('should export all modules as functions', () =\u003e {\n    // Check if request and question are functions\n    expect(typeof api.request).toBe('function');\n    expect(typeof api.question).toBe('function');\n  });\n\n});\n",
+    "amount_of_generated_test_cases": 4,
+    "single_test_run_command": "npm test web/src/api/index.test.ts"
+}

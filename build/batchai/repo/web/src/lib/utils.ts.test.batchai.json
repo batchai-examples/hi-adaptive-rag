@@ -1,0 +1,27 @@
+{
+    "path": "web/src/lib/utils.ts",
+    "model_usage_metrics": {
+        "Duration": 11981752075,
+        "OpenAiUsage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "total_tokens": 0,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "audio_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens_details": {
+                "audio_tokens": 0,
+                "cached_tokens": 0
+            }
+        }
+    },
+    "test_file_path": "web/src/lib/utils.test.ts",
+    "existing_test_code": "",
+    "original_code": "\"use client\";\n\nexport function otEvent(event) {\n  event.preventDefault \u0026\u0026 event.preventDefault();\n  event.stopPropagation \u0026\u0026 event.stopPropagation();\n}\n",
+    "test_code": "\"use client\";\n\nimport { otEvent } from './utils';\n\ndescribe('otEvent', () =\u003e {\n  /**\n   * Test case 1: Happy path - event has both preventDefault and stopPropagation methods\n   * - Create a mock event object with both methods\n   * - Call otEvent with the mock event\n   * - Verify that both methods are called\n   */\n  test('should call preventDefault and stopPropagation when both methods exist', () =\u003e {\n    const mockEvent = {\n      preventDefault: jest.fn(),\n      stopPropagation: jest.fn(),\n    };\n    \n    otEvent(mockEvent);\n    \n    expect(mockEvent.preventDefault).toHaveBeenCalled();\n    expect(mockEvent.stopPropagation).toHaveBeenCalled();\n  });\n\n  /**\n   * Test case 2: Happy path - event has only preventDefault method\n   * - Create a mock event object with only preventDefault\n   * - Call otEvent with the mock event\n   * - Verify that preventDefault is called and stopPropagation is not called\n   */\n  test('should call preventDefault when only preventDefault method exists', () =\u003e {\n    const mockEvent = {\n      preventDefault: jest.fn(),\n      stopPropagation: undefined,\n    };\n    \n    otEvent(mockEvent);\n    \n    expect(mockEvent.preventDefault).toHaveBeenCalled();\n    expect(mockEvent.stopPropagation).toBeUndefined();\n  });\n\n  /**\n   * Test case 3: Happy path - event has only stopPropagation method\n   * - Create a mock event object with only stopPropagation\n   * - Call otEvent with the mock event\n   * - Verify that stopPropagation is called and preventDefault is not called\n   */\n  test('should call stopPropagation when only stopPropagation method exists', () =\u003e {\n    const mockEvent = {\n      preventDefault: undefined,\n      stopPropagation: jest.fn(),\n    };\n    \n    otEvent(mockEvent);\n    \n    expect(mockEvent.stopPropagation).toHaveBeenCalled();\n    expect(mockEvent.preventDefault).toBeUndefined();\n  });\n\n  /**\n   * Test case 4: Negative case - event has neither preventDefault nor stopPropagation methods\n   * - Create a mock event object with neither method\n   * - Call otEvent with the mock event\n   * - Verify that no errors are thrown\n   */\n  test('should not throw an error when neither method exists', () =\u003e {\n    const mockEvent = {};\n    \n    expect(() =\u003e otEvent(mockEvent)).not.toThrow();\n  });\n\n  /**\n   * Test case 5: Corner case - event is null\n   * - Call otEvent with null\n   * - Verify that no errors are thrown\n   */\n  test('should not throw an error when event is null', () =\u003e {\n    expect(() =\u003e otEvent(null)).not.toThrow();\n  });\n\n  /**\n   * Test case 6: Corner case - event is undefined\n   * - Call otEvent with undefined\n   * - Verify that no errors are thrown\n   */\n  test('should not throw an error when event is undefined', () =\u003e {\n    expect(() =\u003e otEvent(undefined)).not.toThrow();\n  });\n});\n",
+    "amount_of_generated_test_cases": 6,
+    "single_test_run_command": "npm test web/src/lib/utils.test.ts"
+}
