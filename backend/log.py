@@ -1,5 +1,6 @@
 import logging
 from logging import Logger
+from typing import Union
 
 from pydantic import BaseModel
 
@@ -11,7 +12,7 @@ class LogConfig(BaseModel):
     format: str
 
 
-def get_logger(name: str, level: str | int = "auto") -> logging.Logger:
+def get_logger(name: str, level: Union[str, int] = "auto") -> logging.Logger:
     r = logging.getLogger(f"{app_logger.name}.{name}")
     if level == "auto":
         level = app_logger.getEffectiveLevel()

@@ -72,6 +72,7 @@ async def submit_question(request: QuestionRequest):
         "question": question
     }
 
+    value = {}  # Initialize value to avoid UnboundLocalError
     for output in compiled_workflow.stream(inputs):
         for key, value in output.items():
             # Node
@@ -80,5 +81,5 @@ async def submit_question(request: QuestionRequest):
             # pprint.pprint(value["keys"], indent=2, width=80, depth=None)
         pprint("\n---\n")
     
-    answer = value["generation"]#"Sorry, I don't know the answer to that question."
+    answer = value.get("generation", "Sorry, I don't know the answer to that question.")
     return {"question": question, "answer": answer}

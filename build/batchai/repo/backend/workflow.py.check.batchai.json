@@ -1,0 +1,37 @@
+{
+    "has_issue": true,
+    "overall_severity": "minor",
+    "issues": [
+        {
+            "short_description": "Typo in function name",
+            "detailed_explaination": "The function name 'generatae' is misspelled. It should be 'generate'.",
+            "suggestion": "Correct the spelling of the function name from 'generatae' to 'generate'.",
+            "issue_line_begin": 12,
+            "issue_line_end": 12,
+            "issue_reference_urls": [],
+            "severity": "minor",
+            "severity_reason": "This is a minor issue as it does not affect the functionality but can lead to confusion."
+        }
+    ],
+    "fixed_code": "from langgraph.graph import END, StateGraph, START\n### from langchain_cohere import CohereEmbeddings\n\nfrom graph import GraphState,web_search, retrieve, grade_documents, generate, transform_query, route_question, decide_to_generate, grade_generation_v_documents_and_question\n\n\n\n    \n### Compile Graph ####################################################################################################\n\nworkflow = StateGraph(GraphState)\n\n# Define the nodes\nworkflow.add_node(\"web_search\", web_search)  # web search\nworkflow.add_node(\"retrieve\", retrieve)  # retrieve\nworkflow.add_node(\"grade_documents\", grade_documents)  # grade documents\nworkflow.add_node(\"generate\", generate)  # generate\nworkflow.add_node(\"transform_query\", transform_query)  # transform_query\n\n# Build graph\nworkflow.add_conditional_edges(\n    START,\n    route_question,\n    {\n        \"web_search\": \"web_search\",\n        \"vectorstore\": \"retrieve\",\n    },\n)\nworkflow.add_edge(\"web_search\", \"generate\")\nworkflow.add_edge(\"retrieve\", \"grade_documents\")\nworkflow.add_conditional_edges(\n    \"grade_documents\",\n    decide_to_generate,\n    {\n        \"transform_query\": \"transform_query\",\n        \"generate\": \"generate\",\n    },\n)\nworkflow.add_edge(\"transform_query\", \"retrieve\")\nworkflow.add_conditional_edges(\n    \"generate\",\n    grade_generation_v_documents_and_question,\n    {\n        \"not supported\": \"generate\",\n        \"useful\": END,\n        \"not useful\": \"transform_query\",\n    },\n)\n",
+    "original_code": "from langgraph.graph import END, StateGraph, START\n### from langchain_cohere import CohereEmbeddings\n\nfrom graph import GraphState,web_search, retrieve, grade_documents, generate, transform_query, route_question, decide_to_generate, grade_generation_v_documents_and_question\n\n\n\n    \n### Compile Graph ####################################################################################################\n\nworkflow = StateGraph(GraphState)\n\n# Define the nodes\nworkflow.add_node(\"web_search\", web_search)  # web search\nworkflow.add_node(\"retrieve\", retrieve)  # retrieve\nworkflow.add_node(\"grade_documents\", grade_documents)  # grade documents\nworkflow.add_node(\"generate\", generate)  # generatae\nworkflow.add_node(\"transform_query\", transform_query)  # transform_query\n\n# Build graph\nworkflow.add_conditional_edges(\n    START,\n    route_question,\n    {\n        \"web_search\": \"web_search\",\n        \"vectorstore\": \"retrieve\",\n    },\n)\nworkflow.add_edge(\"web_search\", \"generate\")\nworkflow.add_edge(\"retrieve\", \"grade_documents\")\nworkflow.add_conditional_edges(\n    \"grade_documents\",\n    decide_to_generate,\n    {\n        \"transform_query\": \"transform_query\",\n        \"generate\": \"generate\",\n    },\n)\nworkflow.add_edge(\"transform_query\", \"retrieve\")\nworkflow.add_conditional_edges(\n    \"generate\",\n    grade_generation_v_documents_and_question,\n    {\n        \"not supported\": \"generate\",\n        \"useful\": END,\n        \"not useful\": \"transform_query\",\n    },\n)\n",
+    "path": "backend/workflow.py",
+    "model_usage_metrics": {
+        "Duration": 6749147913,
+        "OpenAiUsage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "total_tokens": 0,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "audio_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens_details": {
+                "audio_tokens": 0,
+                "cached_tokens": 0
+            }
+        }
+    }
+}

@@ -18,10 +18,10 @@ const withAxios = (ui: UIContextType) => {
       // Do something before request is sent
       config.headers['Content-Type'] = 'application/json'
 
-      // const accessToken = s?.detail?.accessToken;
-      // if (accessToken) {
-      //   config.headers['Authorization'] = `Bearer ${accessToken}`
-      // }
+      const accessToken = s?.detail?.accessToken;
+      if (accessToken) {
+        config.headers['Authorization'] = `Bearer ${accessToken}`
+      }
 
       return config
     },
@@ -38,15 +38,15 @@ const withAxios = (ui: UIContextType) => {
       const errResp = error.response;
       if (errResp) {
         if (errResp.status === 401) {
-          //if (errResp.config.url.endsWith('/rest/signin')) {
-          //  console.log('用户名或密码有误')//TODO: ElMessage.error('用户名或密码有误')
-          //} else {
-          //  console.log('请登录')//ElMessage.error('请登录')
-          //}
+          if (errResp.config.url.endsWith('/rest/signin')) {
+            console.log('用户名或密码有误')//TODO: ElMessage.error('用户名或密码有误')
+          } else {
+            console.log('请登录')//ElMessage.error('请登录')
+          }
           
-          //const router = useRouter()
-          //router.push({ name: 'SignIn' })
-          //s.redirect();
+          const router = useRouter()
+          router.push({ name: 'SignIn' })
+          s.redirect();
           return Promise.resolve(null);
         }
 

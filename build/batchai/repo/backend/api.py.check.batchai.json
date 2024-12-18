@@ -1,0 +1,39 @@
+{
+    "has_issue": true,
+    "overall_severity": "major",
+    "issues": [
+        {
+            "short_description": "Potential Unbound Local Error",
+            "detailed_explaination": "The variable 'value' is used in the return statement without being guaranteed to be defined in all code paths. If the 'compiled_workflow.stream(inputs)' does not yield any output, 'value' will not be assigned, leading to an UnboundLocalError.",
+            "suggestion": "Ensure that 'value' is defined before it is used. You can initialize 'value' to a default value or handle the case where no output is produced by the stream.",
+            "issue_line_begin": 61,
+            "issue_line_end": 61,
+            "issue_reference_urls": [
+                "https://docs.python.org/3/tutorial/errors.html#exceptions"
+            ],
+            "severity": "major",
+            "severity_reason": "Using an uninitialized variable can cause runtime errors, which is critical for application stability."
+        }
+    ],
+    "fixed_code": "from datetime import datetime, timezone\nimport http\nimport os\nfrom logging import Logger\nfrom pprint import pprint\nfrom fastapi import FastAPI, Request\nfrom fastapi.responses import JSONResponse\nfrom starlette.middleware.base import BaseHTTPMiddleware\nfrom pydantic import BaseModel\n\nfrom dotenv import load_dotenv\nfrom misc import format_datetime\nfrom errs import BaseError\nfrom log import get_logger\nfrom workflow import workflow\n\nload_dotenv(dotenv_path=os.path.join(os.getcwd(), \".env\"))\n\n# Compile\ncompiled_workflow = workflow.compile()\n\n\nclass LoggingMiddleware(BaseHTTPMiddleware):\n    logger: Logger = get_logger(\"api\")\n\n    async def dispatch(self, request, call_next):\n        self.logger.info(\"Request body: %s\", await request.body())\n        resp = await call_next(request)\n        return resp\n    \n\nfastapi_app = FastAPI(validate_responses=False)\nfastapi_app.add_middleware(LoggingMiddleware)\n\n@fastapi_app.exception_handler(BaseError)\nasync def custom_exception_handler(request: Request, exc: BaseError):\n    return JSONResponse(\n        status_code=exc.status_code,\n        content={\n            \"path\": request.url.path,\n            \"timestamp\": format_datetime(datetime.now(timezone.utc)),\n            \"status\": exc.status_code,\n            \"error\": http.HTTPStatus(exc.status_code).phrase,\n            \"code\": exc.code,\n            \"message\": exc.detail,\n            \"params\": [],\n        },\n    )\n\n\n@fastapi_app.exception_handler(500)\nasync def internal_exception_handler(request: Request, exc):\n    if isinstance(exc, BaseError):\n        return await custom_exception_handler(request, exc)\n    return JSONResponse(status_code=exc.status_code, content={\"detail\": exc.detail})\n\n \n\n\n####################################################################\nclass QuestionRequest(BaseModel):\n    question: str\n\nclass AnswerResponse(BaseModel):\n    question: str\n    answer: str\n\n@fastapi_app.post(\"/rest/v1/question\", response_model=AnswerResponse)\nasync def submit_question(request: QuestionRequest):\n    question = request.question.strip()\n    inputs = {\n        \"question\": question\n    }\n\n    value = {}  # Initialize value to avoid UnboundLocalError\n    for output in compiled_workflow.stream(inputs):\n        for key, value in output.items():\n            # Node\n            pprint(f\"Node '{key}':\")\n            # Optional: print full state at each node\n            # pprint.pprint(value[\"keys\"], indent=2, width=80, depth=None)\n        pprint(\"\\n---\\n\")\n    \n    answer = value.get(\"generation\", \"Sorry, I don't know the answer to that question.\")\n    return {\"question\": question, \"answer\": answer}\n",
+    "original_code": "from datetime import datetime, timezone\nimport http\nimport os\nfrom logging import Logger\nfrom pprint import pprint\nfrom fastapi import FastAPI, Request\nfrom fastapi.responses import JSONResponse\nfrom starlette.middleware.base import BaseHTTPMiddleware\nfrom pydantic import BaseModel\n\nfrom dotenv import load_dotenv\nfrom misc import format_datetime\nfrom errs import BaseError\nfrom log import get_logger\nfrom workflow import workflow\n\nload_dotenv(dotenv_path=os.path.join(os.getcwd(), \".env\"))\n\n# Compile\ncompiled_workflow = workflow.compile()\n\n\nclass LoggingMiddleware(BaseHTTPMiddleware):\n    logger: Logger = get_logger(\"api\")\n\n    async def dispatch(self, request, call_next):\n        self.logger.info(\"Request body: %s\", await request.body())\n        resp = await call_next(request)\n        return resp\n    \n\nfastapi_app = FastAPI(validate_responses=False)\nfastapi_app.add_middleware(LoggingMiddleware)\n\n@fastapi_app.exception_handler(BaseError)\nasync def custom_exception_handler(request: Request, exc: BaseError):\n    return JSONResponse(\n        status_code=exc.status_code,\n        content={\n            \"path\": request.url.path,\n            \"timestamp\": format_datetime(datetime.now(timezone.utc)),\n            \"status\": exc.status_code,\n            \"error\": http.HTTPStatus(exc.status_code).phrase,\n            \"code\": exc.code,\n            \"message\": exc.detail,\n            \"params\": [],\n        },\n    )\n\n\n@fastapi_app.exception_handler(500)\nasync def internal_exception_handler(request: Request, exc):\n    if isinstance(exc, BaseError):\n        return await custom_exception_handler(request, exc)\n    return JSONResponse(status_code=exc.status_code, content={\"detail\": exc.detail})\n\n \n\n\n####################################################################\nclass QuestionRequest(BaseModel):\n    question: str\n\nclass AnswerResponse(BaseModel):\n    question: str\n    answer: str\n\n@fastapi_app.post(\"/rest/v1/question\", response_model=AnswerResponse)\nasync def submit_question(request: QuestionRequest):\n    question = request.question.strip()\n    inputs = {\n        \"question\": question\n    }\n\n    for output in compiled_workflow.stream(inputs):\n        for key, value in output.items():\n            # Node\n            pprint(f\"Node '{key}':\")\n            # Optional: print full state at each node\n            # pprint.pprint(value[\"keys\"], indent=2, width=80, depth=None)\n        pprint(\"\\n---\\n\")\n    \n    answer = value[\"generation\"]#\"Sorry, I don't know the answer to that question.\"\n    return {\"question\": question, \"answer\": answer}\n",
+    "path": "backend/api.py",
+    "model_usage_metrics": {
+        "Duration": 11184447034,
+        "OpenAiUsage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "total_tokens": 0,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "audio_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens_details": {
+                "audio_tokens": 0,
+                "cached_tokens": 0
+            }
+        }
+    }
+}

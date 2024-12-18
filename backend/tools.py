@@ -65,7 +65,7 @@ def build_question_router():
 
 
     # LLM with function call
-    llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
+    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
     structured_llm_router = llm.with_structured_output(RouteQuery)
 
     # Prompt
@@ -103,7 +103,7 @@ def build_retrieval_grader():
 
 
     # LLM with function call
-    llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
+    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
     structured_llm_grader = llm.with_structured_output(GradeDocuments)
 
     # Prompt
@@ -166,7 +166,7 @@ def build_hallucination_grader():
 
 
     # LLM with function call
-    llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
+    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
     structured_llm_grader = llm.with_structured_output(GradeHallucinations)
 
     # Prompt
@@ -200,7 +200,7 @@ def build_answer_grader():
 
 
     # LLM with function call
-    llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
+    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
     structured_llm_grader = llm.with_structured_output(GradeAnswer)
 
     # Prompt
@@ -224,7 +224,7 @@ answer_grader = build_answer_grader()
 ### Question Re-writer ################################################################################################
 def build_question_rewriter():
     # LLM
-    llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
+    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
 
     # Prompt
     system = """You a question re-writer that converts an input question to a better version that is optimized \n 

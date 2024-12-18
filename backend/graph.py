@@ -44,7 +44,11 @@ def retrieve(state):
     question = state["question"]
 
     # Retrieval
-    documents = retriever.invoke(question)
+    try:
+        documents = retriever.invoke(question)
+    except Exception as e:
+        print(f"Error during retrieval: {e}")
+        documents = []  # Handle the error by returning an empty list or appropriate fallback
     return {"documents": documents, "question": question}
 
 
@@ -85,6 +89,9 @@ def grade_documents(state):
     # Score each doc
     filtered_docs = []
     for d in documents:
+        if not hasattr(d, 'page_content'):
+            print("---GRADE: DOCUMENT STRUCTURE INVALID---")
+            continue  # Skip documents that do not have the expected structure
         score = retrieval_grader.invoke(
             {"question": question, "document": d.page_content}
         )

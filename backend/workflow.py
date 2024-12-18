@@ -1,4 +1,3 @@
-
 from langgraph.graph import END, StateGraph, START
 ### from langchain_cohere import CohereEmbeddings
 
@@ -15,7 +14,7 @@ workflow = StateGraph(GraphState)
 workflow.add_node("web_search", web_search)  # web search
 workflow.add_node("retrieve", retrieve)  # retrieve
 workflow.add_node("grade_documents", grade_documents)  # grade documents
-workflow.add_node("generate", generate)  # generatae
+workflow.add_node("generate", generate)  # generate
 workflow.add_node("transform_query", transform_query)  # transform_query
 
 # Build graph

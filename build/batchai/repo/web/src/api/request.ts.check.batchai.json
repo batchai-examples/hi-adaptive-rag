@@ -1,0 +1,53 @@
+{
+    "has_issue": true,
+    "overall_severity": "major",
+    "issues": [
+        {
+            "short_description": "Missing Authorization Header Handling",
+            "detailed_explaination": "The code contains commented-out logic for setting the Authorization header with a Bearer token. This is critical for authenticated requests to APIs that require token-based authentication. Without this, the service may fail to authenticate with the server, leading to unauthorized errors.",
+            "suggestion": "Uncomment the logic for setting the Authorization header and ensure that the access token is correctly retrieved and passed in the request headers.",
+            "issue_line_begin": 11,
+            "issue_line_end": 15,
+            "issue_reference_urls": [
+                "https://axios-http.com/docs/interceptors",
+                "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else"
+            ],
+            "severity": "major",
+            "severity_reason": "The absence of the Authorization header can lead to critical failures in API communication."
+        },
+        {
+            "short_description": "Error Handling for Unauthorized Requests",
+            "detailed_explaination": "The error handling logic for 401 Unauthorized responses is commented out. This means that users will not receive any feedback or redirection when their authentication fails, which can lead to confusion and a poor user experience.",
+            "suggestion": "Uncomment the logic for handling 401 errors to provide users with appropriate feedback and redirect them to the sign-in page.",
+            "issue_line_begin": 27,
+            "issue_line_end": 33,
+            "issue_reference_urls": [
+                "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else",
+                "https://axios-http.com/docs/response"
+            ],
+            "severity": "major",
+            "severity_reason": "Failure to handle 401 errors properly can lead to a significant negative impact on user experience."
+        }
+    ],
+    "fixed_code": "import { UIContextType } from '@/lib/ui.context';\nimport axios from 'axios'\n\n\nconst withAxios = (ui: UIContextType) =\u003e {\n  const service = axios.create({\n    //baseURL: `${process.env.NEXT_PUBLIC_API_SERVER}/rest/v1`,\n    baseURL: `/rest/v1`,\n    timeout: 60 * 1000,\n    responseType: 'json',\n    maxContentLength: 1024 * 1024,\n    maxRedirects: 0,\n    withCredentials: true\n  })\n\n  service.interceptors.request.use(\n    (config) =\u003e {\n      // Do something before request is sent\n      config.headers['Content-Type'] = 'application/json'\n\n      const accessToken = s?.detail?.accessToken;\n      if (accessToken) {\n        config.headers['Authorization'] = `Bearer ${accessToken}`\n      }\n\n      return config\n    },\n    (error) =\u003e {\n      return Promise.reject(error)\n    }\n  )\n\n  service.interceptors.response.use(\n    (response) =\u003e {\n      return response.data\n    },\n    (error) =\u003e {\n      const errResp = error.response;\n      if (errResp) {\n        if (errResp.status === 401) {\n          if (errResp.config.url.endsWith('/rest/signin')) {\n            console.log('用户名或密码有误')//TODO: ElMessage.error('用户名或密码有误')\n          } else {\n            console.log('请登录')//ElMessage.error('请登录')\n          }\n          \n          const router = useRouter()\n          router.push({ name: 'SignIn' })\n          s.redirect();\n          return Promise.resolve(null);\n        }\n\n        const errData = errResp.data;\n        const desc = [];\n        if (errData.error) {\n          desc.push(errData.error);\n        }\n        if (errData.message) {\n          desc.push(errData.message);\n        }\n        const msg = desc.join(' ');        \n\n        ui.setError(msg);\n        return Promise.reject(msg);\n      }\n\n      return Promise.reject(error);\n    }\n  )\n\n  return service;\n};\n\nexport default withAxios;\n",
+    "original_code": "import { UIContextType } from '@/lib/ui.context';\nimport axios from 'axios'\n\n\nconst withAxios = (ui: UIContextType) =\u003e {\n  const service = axios.create({\n    //baseURL: `${process.env.NEXT_PUBLIC_API_SERVER}/rest/v1`,\n    baseURL: `/rest/v1`,\n    timeout: 60 * 1000,\n    responseType: 'json',\n    maxContentLength: 1024 * 1024,\n    maxRedirects: 0,\n    withCredentials: true\n  })\n\n  service.interceptors.request.use(\n    (config) =\u003e {\n      // Do something before request is sent\n      config.headers['Content-Type'] = 'application/json'\n\n      // const accessToken = s?.detail?.accessToken;\n      // if (accessToken) {\n      //   config.headers['Authorization'] = `Bearer ${accessToken}`\n      // }\n\n      return config\n    },\n    (error) =\u003e {\n      return Promise.reject(error)\n    }\n  )\n\n  service.interceptors.response.use(\n    (response) =\u003e {\n      return response.data\n    },\n    (error) =\u003e {\n      const errResp = error.response;\n      if (errResp) {\n        if (errResp.status === 401) {\n          //if (errResp.config.url.endsWith('/rest/signin')) {\n          //  console.log('用户名或密码有误')//TODO: ElMessage.error('用户名或密码有误')\n          //} else {\n          //  console.log('请登录')//ElMessage.error('请登录')\n          //}\n          \n          //const router = useRouter()\n          //router.push({ name: 'SignIn' })\n          //s.redirect();\n          return Promise.resolve(null);\n        }\n\n        const errData = errResp.data;\n        const desc = [];\n        if (errData.error) {\n          desc.push(errData.error);\n        }\n        if (errData.message) {\n          desc.push(errData.message);\n        }\n        const msg = desc.join(' ');        \n\n        ui.setError(msg);\n        return Promise.reject(msg);\n      }\n\n      return Promise.reject(error);\n    }\n  )\n\n  return service;\n};\n\nexport default withAxios;\n",
+    "path": "web/src/api/request.ts",
+    "model_usage_metrics": {
+        "Duration": 11599813827,
+        "OpenAiUsage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "total_tokens": 0,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "audio_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens_details": {
+                "audio_tokens": 0,
+                "cached_tokens": 0
+            }
+        }
+    }
+}

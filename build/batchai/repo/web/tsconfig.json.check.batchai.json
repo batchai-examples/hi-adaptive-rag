@@ -1,0 +1,51 @@
+{
+    "has_issue": true,
+    "overall_severity": "minor",
+    "issues": [
+        {
+            "short_description": "Inconsistent strict null checks configuration",
+            "detailed_explaination": "The 'strictNullChecks' option is set to false while 'strict' is set to true. This can lead to unexpected behavior as 'strict' enables a set of type-checking options, including 'strictNullChecks'.",
+            "suggestion": "Set 'strictNullChecks' to true to maintain consistency with the 'strict' option.",
+            "issue_line_begin": 14,
+            "issue_line_end": 14,
+            "issue_reference_urls": [
+                "https://www.typescriptlang.org/tsconfig#strictNullChecks"
+            ],
+            "severity": "minor",
+            "severity_reason": "Inconsistent configuration can lead to potential runtime errors."
+        },
+        {
+            "short_description": "Implicit any type is allowed",
+            "detailed_explaination": "The 'noImplicitAny' option is set to false, which allows variables to have an implicit 'any' type. This can lead to type safety issues and makes the code less predictable.",
+            "suggestion": "Set 'noImplicitAny' to true to enforce explicit typing and improve type safety.",
+            "issue_line_begin": 16,
+            "issue_line_end": 16,
+            "issue_reference_urls": [
+                "https://www.typescriptlang.org/tsconfig#noImplicitAny"
+            ],
+            "severity": "minor",
+            "severity_reason": "Allowing implicit any can lead to bugs and makes the code harder to maintain."
+        }
+    ],
+    "fixed_code": "{\n  \"compilerOptions\": {\n    \"lib\": [\"dom\", \"dom.iterable\", \"esnext\"],\n    \"allowJs\": true,\n    \"skipLibCheck\": true,\n    \"strict\": true,\n    \"noEmit\": true,\n    \"esModuleInterop\": true,\n    \"module\": \"esnext\",\n    \"moduleResolution\": \"bundler\",\n    \"resolveJsonModule\": true,\n    \"isolatedModules\": true,\n    \"jsx\": \"preserve\",\n    \"strictNullChecks\": true,\n    \"noImplicitAny\": true,\n    \"incremental\": true,\n    \"sourceMap\": true,\n    \"plugins\": [\n      {\n        \"name\": \"next\"\n      }\n    ],\n    \"paths\": {\n      \"@/*\": [\"./src/*\"]\n    }\n  },\n  \"include\": [\"next-env.d.ts\", \"**/*.ts\", \"**/*.tsx\", \".next/types/**/*.ts\"],\n  \"exclude\": [\"node_modules\"]\n}\n",
+    "original_code": "{\n  \"compilerOptions\": {\n    \"lib\": [\"dom\", \"dom.iterable\", \"esnext\"],\n    \"allowJs\": true,\n    \"skipLibCheck\": true,\n    \"strict\": true,\n    \"noEmit\": true,\n    \"esModuleInterop\": true,\n    \"module\": \"esnext\",\n    \"moduleResolution\": \"bundler\",\n    \"resolveJsonModule\": true,\n    \"isolatedModules\": true,\n    \"jsx\": \"preserve\",\n    \"strictNullChecks\": false,\n    \"noImplicitAny\": false,\n    \"incremental\": true,\n    \"sourceMap\": true,\n    \"plugins\": [\n      {\n        \"name\": \"next\"\n      }\n    ],\n    \"paths\": {\n      \"@/*\": [\"./src/*\"]\n    }\n  },\n  \"include\": [\"next-env.d.ts\", \"**/*.ts\", \"**/*.tsx\", \".next/types/**/*.ts\"],\n  \"exclude\": [\"node_modules\"]\n}\n",
+    "path": "web/tsconfig.json",
+    "model_usage_metrics": {
+        "Duration": 13367044145,
+        "OpenAiUsage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "total_tokens": 0,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "audio_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens_details": {
+                "audio_tokens": 0,
+                "cached_tokens": 0
+            }
+        }
+    }
+}

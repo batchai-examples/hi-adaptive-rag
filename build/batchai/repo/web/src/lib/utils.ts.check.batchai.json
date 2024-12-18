@@ -1,0 +1,26 @@
+{
+    "has_issue": false,
+    "overall_severity": "",
+    "issues": [],
+    "fixed_code": "\"use client\";\n\nexport function otEvent(event) {\n  event.preventDefault \u0026\u0026 event.preventDefault();\n  event.stopPropagation \u0026\u0026 event.stopPropagation();\n}\n",
+    "original_code": "\"use client\";\n\nexport function otEvent(event) {\n  event.preventDefault \u0026\u0026 event.preventDefault();\n  event.stopPropagation \u0026\u0026 event.stopPropagation();\n}\n",
+    "path": "web/src/lib/utils.ts",
+    "model_usage_metrics": {
+        "Duration": 883266612,
+        "OpenAiUsage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "total_tokens": 0,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "audio_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens_details": {
+                "audio_tokens": 0,
+                "cached_tokens": 0
+            }
+        }
+    }
+}

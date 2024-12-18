@@ -1,0 +1,51 @@
+{
+    "has_issue": true,
+    "overall_severity": "minor",
+    "issues": [
+        {
+            "short_description": "Inconsistent type hint for 'level' parameter.",
+            "detailed_explaination": "The 'level' parameter in the 'get_logger' function is defined with a union type of 'str | int', which is not compatible with the expected type for logging levels. Logging levels should be defined as integers (e.g., logging.DEBUG, logging.INFO) or strings that can be converted to integers. This inconsistency can lead to runtime errors if a non-integer value is passed.",
+            "suggestion": "Change the type hint for the 'level' parameter to 'Union[str, int]' and ensure that the function handles both types appropriately.",
+            "issue_line_begin": 7,
+            "issue_line_end": 7,
+            "issue_reference_urls": [
+                "https://docs.python.org/3/library/logging.html#logging.Logger.setLevel"
+            ],
+            "severity": "minor",
+            "severity_reason": "The type hint can lead to confusion and potential runtime errors."
+        },
+        {
+            "short_description": "Missing type hint for 'cfg' parameter in 'init_loggers'.",
+            "detailed_explaination": "The 'cfg' parameter in the 'init_loggers' function lacks a type hint. Adding a type hint improves code readability and helps with static type checking.",
+            "suggestion": "Add a type hint for the 'cfg' parameter to indicate that it should be of type 'LogConfig'.",
+            "issue_line_begin": 15,
+            "issue_line_end": 15,
+            "issue_reference_urls": [
+                "https://docs.python.org/3/library/typing.html"
+            ],
+            "severity": "minor",
+            "severity_reason": "While not critical, missing type hints can hinder code maintainability."
+        }
+    ],
+    "fixed_code": "import logging\nfrom logging import Logger\nfrom typing import Union\n\nfrom pydantic import BaseModel\n\napp_logger = logging.getLogger(\"app\")\n\n\nclass LogConfig(BaseModel):\n    level: str\n    format: str\n\n\ndef get_logger(name: str, level: Union[str, int] = \"auto\") -\u003e logging.Logger:\n    r = logging.getLogger(f\"{app_logger.name}.{name}\")\n    if level == \"auto\":\n        level = app_logger.getEffectiveLevel()\n    r.setLevel(level)\n    return r\n\n\ndef init_loggers(cfg: LogConfig) -\u003e Logger:\n    app_logger.setLevel(cfg.level)\n\n    formatter = logging.Formatter(cfg.format)\n\n    console_handler = logging.StreamHandler()\n    console_handler.setFormatter(formatter)\n    app_logger.addHandler(console_handler)\n\n    return app_logger\n",
+    "original_code": "import logging\nfrom logging import Logger\n\nfrom pydantic import BaseModel\n\napp_logger = logging.getLogger(\"app\")\n\n\nclass LogConfig(BaseModel):\n    level: str\n    format: str\n\n\ndef get_logger(name: str, level: str | int = \"auto\") -\u003e logging.Logger:\n    r = logging.getLogger(f\"{app_logger.name}.{name}\")\n    if level == \"auto\":\n        level = app_logger.getEffectiveLevel()\n    r.setLevel(level)\n    return r\n\n\ndef init_loggers(cfg: LogConfig) -\u003e Logger:\n    app_logger.setLevel(cfg.level)\n\n    formatter = logging.Formatter(cfg.format)\n\n    console_handler = logging.StreamHandler()\n    console_handler.setFormatter(formatter)\n    app_logger.addHandler(console_handler)\n\n    return app_logger\n",
+    "path": "backend/log.py",
+    "model_usage_metrics": {
+        "Duration": 7883951255,
+        "OpenAiUsage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "total_tokens": 0,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "audio_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens_details": {
+                "audio_tokens": 0,
+                "cached_tokens": 0
+            }
+        }
+    }
+}

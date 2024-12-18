@@ -1,0 +1,26 @@
+{
+    "has_issue": false,
+    "overall_severity": "",
+    "issues": [],
+    "fixed_code": "import { UIContextType } from '@/lib/ui.context';\nimport withAxios from './request'\nimport { QuestionRequest, AnswerResponse } from '@/lib';\n\n\nexport async function submitQuestion(ui: UIContextType, question: QuestionRequest): Promise\u003cAnswerResponse\u003e {\n    const resp = await withAxios(ui).post('/question', question);\n    return AnswerResponse.with(resp);\n  }\n",
+    "original_code": "import { UIContextType } from '@/lib/ui.context';\nimport withAxios from './request'\nimport { QuestionRequest, AnswerResponse } from '@/lib';\n\n\nexport async function submitQuestion(ui: UIContextType, question: QuestionRequest): Promise\u003cAnswerResponse\u003e {\n    const resp = await withAxios(ui).post('/question', question);\n    return AnswerResponse.with(resp);\n  }\n",
+    "path": "web/src/api/question.ts",
+    "model_usage_metrics": {
+        "Duration": 982417111,
+        "OpenAiUsage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "total_tokens": 0,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "audio_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens_details": {
+                "audio_tokens": 0,
+                "cached_tokens": 0
+            }
+        }
+    }
+}
